@@ -263,6 +263,8 @@ public:
                        juce::MidiBuffer&         midiMessages) override
     {
         juce::ScopedNoDenormals noDenormals;
+      //  FL STUDIO CRASH SHIELD 
+        if (buffer.getNumChannels() == 0 || buffer.getNumSamples() == 0) return;
 
         // We only use the first (and possibly only) input channel.
         const float* inData    = buffer.getReadPointer (0);
