@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(Vomid VERSION 1.0.0)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -include cstring")
+
 add_subdirectory(JUCE)
 
 juce_add_plugin(Vomid
@@ -14,7 +14,11 @@ juce_add_plugin(Vomid
     IS_SYNTH FALSE
 )
 
-target_sources(Vomid PRIVATE Source/Vomid.cpp)
+# Crucial fix: Tell JUCE to actually generate the JuceHeader.h file
+juce_generate_juce_header(Vomid)
+
+# Note: Matching the lowercase 'vomid.cpp' seen in your logs
+target_sources(Vomid PRIVATE Source/vomid.cpp)
 
 target_link_libraries(Vomid
     PRIVATE
