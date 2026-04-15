@@ -12,8 +12,8 @@ juce_add_plugin(Vomid
     NEEDS_MIDI_INPUT FALSE
     NEEDS_MIDI_OUTPUT TRUE
     IS_SYNTH FALSE
+    PLUGIN_CHARACTERISTICS "Instrument" "Analyzer" "Fx"
 )
-
 # Crucial fix: Tell JUCE to actually generate the JuceHeader.h file
 juce_generate_juce_header(Vomid)
 
