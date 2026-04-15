@@ -1,0 +1,38 @@
+name: Build Vomid VST3/Standalone
+
+# Trigger the workflow when you push to main/master, or manually via a button
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch: 
+
+jobs:
+  build-windows:
+    name: Build on Windows (MSVC)
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    # The server downloads the JUCE framework fresh (just like your local script)
+    - name: Clone JUCE Framework
+      run: git clone --depth 1 -b 8.0.4 https://github.com/juce-framework/JUCE.git
+
+    # Configures CMake to use the default MSVC compiler on the Windows runner
+    - name: Configure CMake
+      run: cmake -B build
+
+    # Builds the actual plugin and executable
+    - name: Build Project (Release)
+      run: cmake --build build --config Release -j4
+
+    # Packages the compiled VST3 and EXE into a zip file for you to download
+    - name: Upload Compiled Plugin
+      uses: actions/upload-artifact@v4
+      with:
+        name: Vomid-Windows-Release
+        path: |
+          build/Vomid_artefacts/Release/Standalone/Vomid.exe
+          build/Vomid_artefacts/Release/VST3/Vomid.vst3/
+        retention-days: 14
